@@ -1,6 +1,6 @@
 const { readFileSync } = require("fs");
-const { get } = require("http");
 const path = require("path");
+const fs = require("fs");
 
 const filePath = path.join(__dirname, "../task.json");
 
@@ -25,7 +25,17 @@ async function getTasksById(id) {
   return task;
 }
 
+async function createNewTask(newTask) {
+  const data = await readAllTasks();
+  newTask.id = data.tasks.length + 1;
+  console.log("New Task ID:", newTask);
+  data.tasks.push(newTask);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  return newTask;
+}
+
 module.exports = {
   getAllTasks,
   getTasksById,
+  createNewTask,
 };

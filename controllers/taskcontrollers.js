@@ -1,4 +1,8 @@
-const { getAllTasks, getTasksById } = require("../models/taskModel.js");
+const {
+  getAllTasks,
+  getTasksById,
+  createNewTask,
+} = require("../models/taskModel.js");
 
 async function getTasks(req, res) {
   try {
@@ -18,8 +22,19 @@ async function getTaskById(req, res) {
     res.status(404).json({ message: error.message });
   }
 }
+async function addTask(req, res) {
+  const newTask = req.body;
+  console.log("Adding new task:", newTask);
+  try {
+    const addedTask = await createNewTask(newTask);
+    res.status(201).json(addedTask);
+  } catch (error) {
+    res.status(500).json({ message: "Error adding task" });
+  }
+}
 
 module.exports = {
   getTasks,
   getTaskById,
+  addTask,
 };
