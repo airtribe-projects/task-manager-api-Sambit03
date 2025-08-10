@@ -46,9 +46,21 @@ async function removeTask(id) {
   return { message: "Task deleted successfully" };
 }
 
+async function updateTasks(id, updatedTask) {
+  const data = await readAllTasks();
+  const taskIndex = data.tasks.findIndex((task) => task.id === id);
+  if (taskIndex === -1) {
+    throw new Error("Task not found");
+  }
+  data.tasks[taskIndex] = { ...data.tasks[taskIndex], ...updatedTask };
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  return data.tasks[taskIndex];
+}
+
 module.exports = {
   getAllTasks,
   getTasksById,
   createNewTask,
   removeTask,
+  updateTasks,
 };
