@@ -2,6 +2,7 @@ const {
   getAllTasks,
   getTasksById,
   createNewTask,
+  removeTask,
 } = require("../models/taskModel.js");
 
 async function getTasks(req, res) {
@@ -33,8 +34,19 @@ async function addTask(req, res) {
   }
 }
 
+async function deleteTask(req, res) {
+  const taskId = parseInt(req.params.id, 10);
+  try {
+    const result = await removeTask(taskId);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
 module.exports = {
   getTasks,
   getTaskById,
   addTask,
+  deleteTask,
 };
