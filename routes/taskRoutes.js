@@ -6,9 +6,11 @@ const {
   addTask,
   deleteTask,
   updateTask,
+  filterTasksByCompletion,
 } = require("../controllers/taskcontrollers.js");
 
 router.get("/", getTasks);
+router.get("/filter", filterTasksByCompletion);
 router.get("/:id", getTaskById);
 router.post("/", addTask);
 router.delete("/:id", deleteTask);

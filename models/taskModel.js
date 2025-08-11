@@ -57,10 +57,21 @@ async function updateTasks(id, updatedTask) {
   return data.tasks[taskIndex];
 }
 
+async function filterTasks(completionStatus) {
+  const data = await readAllTasks();
+  console.log("Filtering tasks by completion status:", completionStatus);
+  const filterBycompleted = data.tasks.filter(
+    (task) => task.completed === completionStatus
+  );
+  console.log("Filtered Tasks:", filterBycompleted);
+  return filterBycompleted;
+}
+
 module.exports = {
   getAllTasks,
   getTasksById,
   createNewTask,
   removeTask,
   updateTasks,
+  filterTasks,
 };

@@ -4,6 +4,7 @@ const {
   createNewTask,
   removeTask,
   updateTasks,
+  filterTasks,
 } = require("../models/taskModel.js");
 
 async function getTasks(req, res) {
@@ -48,12 +49,28 @@ async function deleteTask(req, res) {
 async function updateTask(req, res) {
   const taskId = parseInt(req.params.id, 10);
   const updatedTask = req.body;
-  console.log("Updating task ID:", taskId, "with data:", updatedTask);
   try {
     const task = await updateTasks(taskId, updatedTask);
     res.status(200).json(task);
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+}
+
+async function filterTasksByCompletion(req, res) {
+  const completedParam = req.query.completed;
+  console.log("Filtering tasks by completion status:", completedParam);
+  //   if (completedParam === undefined) {
+  //     const data = await readAllTasks();
+  //     return res.json(data.tasks);
+  //   }
+
+  const completed = completedParam === "true";
+  try {
+    const tasks = await filterTasks(completed);
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: "Error filtering tasks" });
   }
 }
 
@@ -63,4 +80,5 @@ module.exports = {
   addTask,
   deleteTask,
   updateTask,
+  filterTasksByCompletion,
 };
